@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Data Display</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>Employee Details</h1>
+
+    <div class="container">
+        <table id="dataTable">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        fetch('data.csv')
+        .then(response => response.text())
+        .then(data => {
+
+            const rows = data.trim().split('\n');
+
+            const headers = rows[0].split(',');
+
+            const tableHead = document.querySelector("#dataTable thead");
+            const tableBody = document.querySelector("#dataTable tbody");
+
+            // Display column headings
+            let headerHTML = "<tr>";
+
+            headers.forEach(header => {
+                headerHTML += `<th>${header}</th>`;
+            });
+
+            headerHTML += "</tr>";
+
+            tableHead.innerHTML = headerHTML;
+
+            // Display CSV records
+            for (let i = 1; i < rows.length; i++) {
+
+                const columns = rows[i].split(',');
+
+                let rowHTML = "<tr>";
+
+                columns.forEach(value => {
+                    rowHTML += `<td>${value}</td>`;
+                });
+
+                rowHTML += "</tr>";
+
+                tableBody.innerHTML += rowHTML;
+            }
+
+        })
+        .catch(error => {
+            console.error("Error loading CSV:", error);
+        });
+    </script>
+
+</body>
+</html>
